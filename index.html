@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plus One Infinity | 官方網站</title>
+  <meta name="description" content="Plus One Infinity：我不多，只多一點，但這一點，就是無限。" />
+  <meta name="theme-color" content="#070a12" />
+
+  <style>
+    :root{
+      --bg: #070a12;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.09);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.65);
+      --line: rgba(255,255,255,.12);
+      --accent: #7bf0ff; /* 想換品牌色改這裡 */
+      --accent2: #ffe08a;
+      --shadow: 0 18px 50px rgba(0,0,0,.45);
+      --radius: 18px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang TC", "Noto Sans TC", Arial, sans-serif;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        /* 主色光暈（保留第一版的青 + 金） */
+        radial-gradient(1200px 600px at 15% -10%, rgba(123,240,255,.16), transparent 80%),
+        radial-gradient(1000px 600px at 85% 10%, rgba(255,224,138,.12), transparent 55%),
+
+        /* 加強灰黑漸層（讓字更清楚、整體更有深度） */
+        radial-gradient(900px 520px at 50% 18%, rgba(0,0,0,.55), rgba(0,0,0,0) 60%),
+        radial-gradient(1200px 900px at 50% 120%, rgba(0,0,0,.72), rgba(0,0,0,0) 62%),
+        linear-gradient(180deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,.18) 28%, rgba(0,0,0,.72) 100%),
+        linear-gradient(135deg, rgba(255,255,255,.025) 0%, rgba(255,255,255,0) 45%),
+
+        var(--bg);
+      min-height:100vh;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 20px}
+    .grid-bg{
+      position:fixed; inset:0; pointer-events:none; opacity:.18;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 70px 70px;
+      mask-image: radial-gradient(600px 400px at 50% 10%, #000 45%, transparent 78%);
+    }
+
+    /* Top bar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(14px);
+      background: rgba(11,15,25,.68);
+      border-bottom:1px solid var(--line);
+    }
+    .topbar .row{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      min-width: 220px;
+    }
+    .badge{
+      width:36px; height:36px; border-radius:12px;
+      border:1px solid var(--line);
+      background: linear-gradient(135deg, rgba(123,240,255,.25), rgba(255,224,138,.12));
+      box-shadow: var(--shadow);
+      display:grid; place-items:center;
+      font-family: var(--mono);
+      letter-spacing:.5px;
+    }
+    .brand h1{
+      margin:0;
+      font-size: 14px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .brand .sub{
+      font-size:12px; color:var(--muted);
+      font-family: var(--mono);
+    }
+    nav{
+      display:flex; gap:18px; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    nav a{
+      font-size:13px;
+      color: var(--muted);
+      padding:8px 10px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+    }
+    nav a:hover{
+      color: var(--text);
+      border-color: var(--line);
+      background: rgba(255,255,255,.04);
+    }
+
+    /* Hero */
+    .hero{padding:72px 0 34px}
+    .hero .panel{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero .panel::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(800px 220px at 20% 0%, rgba(123,240,255,.22), transparent 60%),
+                  radial-gradient(700px 220px at 90% 30%, rgba(255,224,138,.16), transparent 55%);
+      opacity:.7;
+      pointer-events:none;
+    }
+    .hero .content{
+      position:relative;
+      padding: 44px 30px;
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 28px;
+      align-items:center;
+    }
+    .kicker{
+      font-family: var(--mono);
+      color: var(--muted);
+      letter-spacing: .18em;
+      font-size: 12px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .headline{
+      margin:0 0 14px 0;
+      font-size: clamp(28px, 3.6vw, 48px);
+      line-height:1.12;
+      letter-spacing: .02em;
+    }
+    .tagline{
+      margin:0 0 18px 0;
+      font-size: 16px;
+      color: var(--muted);
+      line-height:1.7;
+    }
+    .cta{
+      display:flex; gap:12px; flex-wrap:wrap; align-items:center;
+      margin-top: 18px;
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-size: 14px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn:hover{background: rgba(255,255,255,.06)}
+    .btn.primary{
+      border-color: rgba(123,240,255,.35);
+      background: linear-gradient(135deg, rgba(123,240,255,.18), rgba(255,255,255,.04));
+    }
+    .btn.primary:hover{background: linear-gradient(135deg, rgba(123,240,255,.24), rgba(255,255,255,.05))}
+    .meta{
+      border-left:1px solid var(--line);
+      padding-left: 18px;
+      display:grid;
+      gap: 12px;
+    }
+    .meta .stat{
+      border:1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      padding: 12px 12px;
+    }
+    .meta .stat .t{
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing:.12em;
+      text-transform: uppercase;
+      margin-bottom:6px;
+    }
+    .meta .stat .v{
+      font-size: 14px;
+      line-height:1.5;
+    }
+    .micro{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      font-family: var(--mono);
+    }
+    .pill{
+      border:1px solid var(--line);
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.03);
+    }
+
+    /* Sections */
+    section{padding: 42px 0}
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    h2{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:.12em;
+      text-transform: uppercase;
+      font-family: var(--mono);
+    }
+    .hint{color: var(--muted); font-size: 13px; line-height:1.6}
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .card{
+      grid-column: span 4;
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.04);
+      padding: 16px;
+      min-height: 150px;
+    }
+    .card:hover{background: rgba(255,255,255,.05)}
+    .card .label{
+      font-family: var(--mono);
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing:.16em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .card .title{
+      margin:0 0 8px 0;
+      font-size: 16px;
+    }
+    .card .desc{
+      margin:0;
+      color: var(--muted);
+      line-height:1.7;
+      font-size: 14px;
+    }
+
+    /* Lines */
+    .lines{display:grid; grid-template-columns: repeat(12, 1fr); gap:14px}
+    .line-card{
+      grid-column: span 4;
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      padding: 16px;
+    }
+    .line-card .top{
+      display:flex; justify-content:space-between; align-items:center; gap:12px;
+      margin-bottom: 10px;
+    }
+    .chip{
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing:.12em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .line-card .name{
+      margin:0;
+      font-size: 16px;
+    }
+    .line-card .copy{
+      margin:0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height:1.7;
+    }
+
+    /* About + Contact */
+    .two{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .panel{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.04);
+      padding: 16px;
+    }
+    .panel p{margin:0; color: var(--muted); line-height:1.8}
+    form{
+      display:grid; gap:10px;
+      margin-top: 10px;
+    }
+    label{
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing:.12em;
+      text-transform: uppercase;
+    }
+    input, textarea{
+      width:100%;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(11,15,25,.55);
+      color: var(--text);
+      padding: 12px 12px;
+      outline:none;
+      font-family: var(--sans);
+    }
+    textarea{min-height: 110px; resize: vertical}
+    .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    .small{font-size:12px; color: var(--muted); line-height:1.6}
+    .footer{
+      padding: 26px 0 40px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      max-width: 360px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(11,15,25,.8);
+      backdrop-filter: blur(14px);
+      color: var(--text);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: .22s ease;
+      pointer-events:none;
+      font-size: 13px;
+      line-height:1.5;
+    }
+    .toast.show{opacity:1; transform: translateY(0)}
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .hero .content{grid-template-columns: 1fr; padding: 28px 18px}
+      .meta{border-left:none; padding-left:0}
+      .cards .card{grid-column: span 6}
+      .lines .line-card{grid-column: span 12}
+      .two{grid-template-columns: 1fr}
+      nav{gap: 8px}
+      .brand{min-width:auto}
+    }
+    @media (max-width: 520px){
+      .cards .card{grid-column: span 12}
+      .row2{grid-template-columns:1fr}
+    }
+  
+    /* --- Per-box gradients: every dialog/card gets its own vibe --- */
+    /* Big hero panel */
+    .hero .panel{
+      background:
+        radial-gradient(900px 420px at 15% 0%, rgba(123,240,255,.18), transparent 55%),
+        radial-gradient(760px 420px at 100% 15%, rgba(255,224,138,.16), transparent 58%),
+        linear-gradient(180deg, rgba(255,255,255,.065), rgba(255,255,255,.02));
+    }
+
+    /* Hero meta stats (POSITIONING / BEST FOR / CTA) */
+    .hero .meta .stat:nth-child(1){
+      background:
+        radial-gradient(420px 240px at 10% 0%, rgba(123,240,255,.18), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    }
+    .hero .meta .stat:nth-child(2){
+      background:
+        radial-gradient(420px 240px at 0% 100%, rgba(255,224,138,.16), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    }
+    .hero .meta .stat:nth-child(3){
+      background:
+        radial-gradient(420px 240px at 100% 0%, rgba(180,160,255,.14), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    }
+
+    /* Lines cards: Core / Shadow / Echo */
+    #lines .line-card:nth-child(1){
+      background:
+        radial-gradient(620px 320px at 15% 0%, rgba(123,240,255,.18), transparent 60%),
+        radial-gradient(520px 320px at 100% 110%, rgba(255,224,138,.10), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02));
+    }
+    #lines .line-card:nth-child(2){
+      background:
+        radial-gradient(620px 320px at 100% 0%, rgba(180,160,255,.18), transparent 60%),
+        radial-gradient(520px 320px at 10% 110%, rgba(123,240,255,.10), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02));
+    }
+    #lines .line-card:nth-child(3){
+      background:
+        radial-gradient(620px 320px at 0% 0%, rgba(255,224,138,.18), transparent 60%),
+        radial-gradient(520px 320px at 100% 110%, rgba(255,160,200,.10), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02));
+    }
+
+    /* Panel after Lines (reminder box) */
+    #lines .panel{
+      background:
+        radial-gradient(820px 380px at 0% 0%, rgba(255,224,138,.14), transparent 60%),
+        radial-gradient(820px 420px at 100% 100%, rgba(123,240,255,.12), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    }
+
+    /* Value cards (01/02/03) */
+    .cards .card:nth-child(1){
+      background:
+        radial-gradient(560px 320px at 0% 0%, rgba(123,240,255,.16), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    }
+    .cards .card:nth-child(2){
+      background:
+        radial-gradient(560px 320px at 100% 0%, rgba(255,224,138,.14), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    }
+    .cards .card:nth-child(3){
+      background:
+        radial-gradient(560px 320px at 0% 100%, rgba(180,160,255,.14), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    }
+
+    /* About + Social panels */
+    #about .panel{
+      background:
+        radial-gradient(900px 420px at 0% 0%, rgba(123,240,255,.14), transparent 62%),
+        radial-gradient(900px 420px at 100% 100%, rgba(255,224,138,.10), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02));
+    }
+    #about .wrap .panel:nth-of-type(2){
+      background:
+        radial-gradient(900px 420px at 100% 0%, rgba(255,224,138,.14), transparent 62%),
+        radial-gradient(900px 420px at 0% 100%, rgba(255,160,200,.10), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.02));
+    }
+
+    /* Contact form panel */
+    #contact .panel{
+      background:
+        radial-gradient(900px 420px at 10% 0%, rgba(180,160,255,.16), transparent 62%),
+        radial-gradient(900px 420px at 100% 120%, rgba(123,240,255,.12), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    }
+/* ✅ 核彈級修正：強制把左上 badge 壓成固定尺寸 */
+header.topbar a.brand .badge{
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  flex: 0 0 44px;
+}
+
+header.topbar a.brand .badge .badge-logo{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+header.topbar a.brand{
+  display: inline-flex;
+  align-items: center;
+  gap: 12px; /* badge 和文字的距離 */
+}
+
+}
+
+header.topbar a.brand .badge .badge-logo{
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+  </style>
+</head>
+
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="wrap">
+      <div class="row">
+        <a class="brand" href="#top" aria-label="回到頂部">
+          <div class="badge">
+  <img src="assets/logo.png" alt="Plus One Infinity" class="badge-logo">
+</div>
+          <div>
+            <h1>PLUS ONE INFINITY</h1>
+            <div class="sub">CORE · SHADOW · ECHO</div>
+          </div>
+        </a>
+
+        <nav aria-label="主要導覽">
+          <a href="#features">賣點</a>
+          <a href="#lines">系列</a>
+          <a href="#about">關於</a>
+          <a href="#contact">聯絡</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap">
+        <div class="panel">
+          <div class="content">
+            <div>
+              <div class="kicker">Minimal Utility · Designer Edge</div>
+              <h2 class="headline">我不多，只多一點<br>這一點，就是無限</h2>
+              <p class="tagline">
+                Plus One Infinity 以極簡為核心，把機能當成語言，把細節當成信任。
+                你穿上它不是「變成別人」，是把你本來就有的那一點放到最大。
+              </p>
+
+              <div class="cta">
+                <a class="btn primary" href="#lines" role="button">查看系列 ⟶</a>
+                <a class="btn" href="#contact" role="button">我要合作 / 詢價</a>
+                <span class="micro">
+                  <span class="pill">台灣設計</span>
+                  <span class="pill">少而精</span>
+                  <span class="pill">可持續思維</span>
+                </span>
+              </div>
+            </div>
+
+            <aside class="meta" aria-label="快速資訊">
+              <div class="stat">
+                <div class="t">Positioning</div>
+                <div class="v">極簡 + 機能 + 設計師路線</div>
+              </div>
+              <div class="stat">
+                <div class="t">Best For</div>
+                <div class="v">日常通勤、舞台工作者、旅途與城市探索</div>
+              </div>
+              <div class="stat">
+                <div class="t">CTA</div>
+                <div class="v">合作打樣、團體訂製、品牌聯名</div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <div class="section-title">
+          <h2>Value</h2>
+          <div class="hint">三個理由，讓訪客不只是「覺得好看」，而是「想要了解」</div>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <div class="label">01 / Materials</div>
+            <h3 class="title">布料選擇有邏輯</h3>
+            <p class="desc">耐用、好整理、穿著舒適，從日常維護成本開始幫你省麻煩。</p>
+          </article>
+
+          <article class="card">
+            <div class="label">02 / Function</div>
+            <h3 class="title">機能不是堆配件</h3>
+            <p class="desc">口袋、剪裁、活動量，都是為「幹大事」而設計，而不為炫技。</p>
+          </article>
+
+          <article class="card">
+            <div class="label">03 / Design</div>
+            <h3 class="title">極簡但有辨識度</h3>
+            <p class="desc">遠看乾淨，近看有細節。低調但不無聊，比如像你。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="lines">
+      <div class="wrap">
+        <div class="section-title">
+          <h2>Lines</h2>
+          <div class="hint">三條支線先講清楚，客人才知道你不是在賣「泛用衣服」</div>
+        </div>
+
+        <div class="lines">
+          <div class="line-card">
+            <div class="top">
+              <h3 class="name">Core Line</h3>
+              <span class="chip">Sustainable Minimal</span>
+            </div>
+            <p class="copy">永續極簡主義。為日常建立可重複穿搭的穩定系統，少件數，多組合。</p>
+          </div>
+
+          <div class="line-card">
+            <div class="top">
+              <h3 class="name">Shadow Line</h3>
+              <span class="chip">Cyberpunk Stealth</span>
+            </div>
+            <p class="copy">科技潛行者。更俐落的輪廓、更強的機能細節，適合夜晚與城市。</p>
+          </div>
+
+          <div class="line-card">
+            <div class="top">
+              <h3 class="name">Echo Line</h3>
+              <span class="chip">Future Humanism</span>
+            </div>
+            <p class="copy">未來人文詩篇。用柔和比例與文字語言，把情緒藏在剪裁裡。</p>
+          </div>
+        </div>
+
+        <div style="margin-top:14px" class="panel">
+          <p>
+            小提醒：如果你還沒準備商品照沒關係。先上線這頁，用「系列定位 + 合作表單」收需求。
+            等你有 3 張主視覺，我們再把它升級成更像太空任務簡報的版本📡
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="wrap">
+        <div class="section-title">
+          <h2>About</h2>
+          <div class="hint">把品牌講成一句話，才有記憶點</div>
+        </div>
+
+        <div class="two">
+          <div class="panel">
+            <p>
+              <strong style="color:var(--text)">Plus One Infinity</strong>
+              是一個把「少一點噪音，多一點精準」當成信仰的品牌。
+              我們相信衣服不是裝飾，是你每天要用的工具。
+              所以每一件都要能扛住日常，也要扛得住你對美感的標準。
+            </p>
+          </div>
+
+          <div class="panel">
+            <p>
+              <span style="font-family:var(--mono); letter-spacing:.12em; color:var(--muted); text-transform:uppercase;">Social</span><br/>
+              Instagram：<a href="#" style="color:var(--text); text-decoration:underline">（放你的 IG 連結）</a><br/>
+              LINE：<a href="#" style="color:var(--text); text-decoration:underline">（放你的 LINE 官方帳號）</a><br/>
+              Email：<a href="mailto:plusoneattaiwan@gmail.com" style="color:var(--text); text-decoration:underline">plusoneattaiwan@gmail.com</a>
+            </p>
+            <p style="margin-top:10px" class="small">你也可以把「婚禮主持歌手」這個身份變成信任加成：舞台工作者更懂衣服的活動性。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap">
+        <div class="section-title">
+          <h2>Contact</h2>
+          <div class="hint">先收需求，後做產品。這叫用市場餵養設計。</div>
+        </div>
+
+        <div class="panel">
+          <form id="contactForm">
+            <div class="row2">
+              <div>
+                <label for="name">你的稱呼</label>
+                <input id="name" name="name" placeholder="例如：小明" autocomplete="name" />
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input id="email" name="email" placeholder="name@example.com" autocomplete="email" />
+              </div>
+            </div>
+
+            <div>
+              <label for="topic">你想做什麼</label>
+              <input id="topic" name="topic" placeholder="合作打樣 / 團體訂製 / 聯名提案 / 其他" />
+            </div>
+
+            <div>
+              <label for="message">需求內容</label>
+              <textarea id="message" name="message" placeholder="例如：我想做 20 件制服，需求是耐穿、好洗、要有收納口袋，預算每件約..."></textarea>
+            </div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+              <button class="btn primary" type="submit">送出（開啟寄信）</button>
+              <button class="btn" type="button" id="copyBtn">複製內容</button>
+              <span class="small">這版先用「打開你的信箱寄出」方式，不用後端也能上線。</span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <footer class="footer">
+        <div>© <span id="year"></span> PLUS ONE INFINITY · Built as a one-page launch pad.</div>
+      </footer>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const yearEl = document.getElementById("year");
+    yearEl.textContent = new Date().getFullYear();
+
+    const toast = (msg) => {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      clearTimeout(window.__t);
+      window.__t = setTimeout(() => el.classList.remove("show"), 2400);
+    };
+
+    const form = document.getElementById("contactForm");
+    const copyBtn = document.getElementById("copyBtn");
+
+    const getVal = (id) => document.getElementById(id).value.trim();
+
+    const buildMail = () => {
+      const name = getVal("name");
+      const email = getVal("email");
+      const topic = getVal("topic");
+      const message = getVal("message");
+
+      const subject = `[合作/詢價] ${topic || "未填主題"} - ${name || "未署名"}`;
+      const body =
+`稱呼：${name || "-"}
+Email：${email || "-"}
+主題：${topic || "-"}
+
+需求內容：
+${message || "-"}
+
+（由一頁式官網表單產生）`;
+
+      return { subject, body };
+    };
+
+    const isEmailLike = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const email = getVal("email");
+      const message = getVal("message");
+
+      if (email && !isEmailLike(email)) {
+        toast("Email 格式怪怪的，你是不是少打一個 .com 或多打一個空白");
+        return;
+      }
+      if (!message) {
+        toast("先寫一下需求內容，不然我不知道要幫你把夢翻成布料");
+        return;
+      }
+
+      const { subject, body } = buildMail();
+      const to = "plusoneattaiwan@gmail.com"; // TODO: 改成你的收件信箱
+      const url = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      toast("已幫你組好信件內容，準備開啟信箱");
+      window.location.href = url;
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      const { subject, body } = buildMail();
+      const text = `Subject: ${subject}\n\n${body}`;
+      try{
+        await navigator.clipboard.writeText(text);
+        toast("已複製，貼到任何地方都能用");
+      }catch{
+        toast("複製失敗，可能是瀏覽器權限不給力");
+      }
+    });
+  </script>
+</body>
+</html>
